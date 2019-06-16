@@ -9,7 +9,8 @@ $_array = [];
 
 init();
 
-find(2);//实现查找
+//find(2);//实现查找
+insert(7, 4);//实现新增
 
 //初始化数据
 function init()
@@ -29,8 +30,26 @@ function find($idx)
     output($cur);
 }
 
+//插入
+function insert($idx, $val)
+{
+    checkIndex($idx, $_is_insert = true);
+
+    global $_array;
+    $_count = count($_array);
+
+    for ($i = $_count - 1; $i >= $idx; $i--) {
+        $_array[$i + 1] = $_array[$i];
+    }
+
+    $_array[$idx] = $val;
+
+    output($_array);
+
+}
+
 //检测
-function checkIndex($idx)
+function checkIndex($idx, $is_insert = false)
 {
     global $_array;
 
@@ -38,7 +57,11 @@ function checkIndex($idx)
         exit("index format error");
     }
 
-    $idxMaxLength = count($_array) - 1;
+    $idxMaxLength = count($_array) - 1;//默认查找操作
+    if ($is_insert) {//如果是插入操作
+        $idxMaxLength = count($_array);
+    }
+
     if ($idx < 0 || $idx > $idxMaxLength) {
         exit("index overflow");
     }
